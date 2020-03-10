@@ -1,3 +1,6 @@
+<?php
+// phpcs:ignoreFile
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +47,8 @@ $result = $pdo->query($query)->fetch();
     </table>
     <p><?php echo $result['description'] ?></p>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/<?php echo $result['trailer'] ?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/<?php echo $result['trailer'] ?>"
+        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 </body>
 </html>

@@ -1,3 +1,6 @@
+<?php
+// phpcs:ignoreFile
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,42 +9,42 @@
 </head>
 <body>
     <?php
-        function select($quary){
+    function select($quary){
 
-            $host = 'localhost';
-            $db   = 'netland';
-            $user = 'root';
-            $pass = 'HywtGBNiwu823@';
-            $charset = 'utf8mb4';
-            
-            $dsn = "mysql:host=$host;dbname=$db;";
-            $options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
+        $host = 'localhost';
+        $db   = 'netland';
+        $user = 'root';
+        $pass = 'HywtGBNiwu823@';
+        $charset = 'utf8mb4';
 
-            try {
-                $pdo = new PDO($dsn, $user, $pass, $options);
-            } catch (\PDOException $e) {
-                throw new \PDOException($e->getMessage(), (int)$e->getCode());
-            }
+        $dsn = "mysql:host=$host;dbname=$db;";
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
 
-            $formatResult = array();
-
-            $rawResult = $pdo->query($quary);
-            while ($row = $rawResult->fetch()) {
-                $rowResult = array();
-
-                foreach ($row as $collum => $value) {
-                    $rowResult[$collum] = $value;
-                }
-
-                $formatResult[] = $rowResult;
-            }
-
-            return $formatResult;
+        try {
+            $pdo = new PDO($dsn, $user, $pass, $options);
+        } catch (\PDOException $e) {
+            throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
+
+        $formatResult = array();
+
+        $rawResult = $pdo->query($quary);
+        while ($row = $rawResult->fetch()) {
+            $rowResult = array();
+
+            foreach ($row as $collum => $value) {
+                $rowResult[$collum] = $value;
+        }
+
+        $formatResult[] = $rowResult;
+    }
+
+    return $formatResult;
+    }
     ?>
     <h1>Welkom op het netland beheerders paneel</h1>
 
@@ -49,13 +52,22 @@
 
     <table>
         <thead>
-            <th>Titel</th>
-            <th>Rating</th>
+            <th><a href="index.php?sort=title">Title</a></th>
+            <th><a href="index.php?sort=rating">Rating</a></th>
             <th></th>
         </thead>
         <tbody>
             <?php
-                $rows = select('SELECT * FROM series');
+                if ($_GET['sort'] === 'title'){
+                    $sql = 'SELECT * FROM series ORDER BY title';
+                } elseif ($_GET['sort'] === 'rating') {
+                    $sql = 'SELECT * FROM series ORDER BY rating';
+                } else {
+                    $sql = 'SELECT * FROM series';
+                }
+
+
+                $rows = select($sql);
                 foreach ($rows as $row) {
                     echo <<<EOT
                         <tr>
@@ -74,13 +86,21 @@
 
     <table>
         <thead>
-            <th>Titel</th>
-            <th>Duur</th>
+            <th><a href="index.php?sort=title">Title</a></th>
+            <th><a href="index.php?sort=duration">Duur</a></th>
             <th></th>
         </thead>
         <tbody>
             <?php
-            $rows = select('SELECT * FROM films');
+            if ($_GET['sort'] === 'title'){
+                $sql = 'SELECT * FROM films ORDER BY title';
+            } elseif ($_GET['sort'] === 'duration') {
+                $sql = 'SELECT * FROM films ORDER BY duration';
+            } else {
+                $sql = 'SELECT * FROM films';
+            }
+
+            $rows = select($sql);
             foreach ($rows as $row) {
                 echo <<<EOT
                             <tr>
